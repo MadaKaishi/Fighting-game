@@ -19,7 +19,6 @@ const background2 = new Sprite({
     imageSrc: './img/background_2/layer_2.png'
 })
 
-
 const mist = new Sprite({
     position: {x:0, y:400},
     imageSrc: './img/background_2/layer_3.png', framesMax: 2, framesHold: 20
@@ -152,8 +151,6 @@ const keys = {
         pressed: false
     }
 }
-
-
 
 decreaseTimer()
 
