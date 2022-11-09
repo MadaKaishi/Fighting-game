@@ -11,14 +11,19 @@ let timeNonStop = true
 
 const background = new Sprite({
     position: {x:0, y:0},
-    imageSrc: './img/background.png'
+    imageSrc: './img/background_2/layer_1.png'
 })
 
-const shop = new Sprite({
-    position: {x:620, y:127},
-    imageSrc: './img/shop.png', scale: 2.75, framesMax: 6, framesHold: 10
+const background2 = new Sprite({
+    position: {x:0, y:155},
+    imageSrc: './img/background_2/layer_2.png'
 })
 
+
+const mist = new Sprite({
+    position: {x:0, y:400},
+    imageSrc: './img/background_2/layer_3.png', framesMax: 2, framesHold: 20
+})
 
 const player = new Fighter({
     position: {
@@ -33,44 +38,44 @@ const player = new Fighter({
         x: 0,
         y: 0
     },
-    imageSrc: './img/samuraiMack/Idle.png',
-    scale: 2.5, framesMax: 8, offset: {x:215,y:157},
+    imageSrc: './img/fantasy/Idle.png',
+    scale: 3, framesMax: 10, offset: {x:215,y:60},
     sprites: {
         idle: {
-            imageSrc: './img/samuraiMack/Idle.png',
-            framesMax: 8
+            imageSrc: './img/fantasy/Idle.png',
+            framesMax: 10
         },
         run: {
-            imageSrc: './img/samuraiMack/Run.png',
+            imageSrc: './img/fantasy/Run.png',
             framesMax: 8
         },
         jump: {
-            imageSrc: './img/samuraiMack/Jump.png',
-            framesMax: 2
+            imageSrc: './img/fantasy/Jump.png',
+            framesMax: 3
         },
         fall: {
-            imageSrc: './img/samuraiMack/Fall.png',
-            framesMax: 2
+            imageSrc: './img/fantasy/Fall.png',
+            framesMax: 3
         },
         attack1: {
-            imageSrc: './img/samuraiMack/Attack1.png',
-            framesMax: 6
+            imageSrc: './img/fantasy/Attack1.png',
+            framesMax: 7
         },
         takeHit: {
-            imageSrc: './img/samuraiMack/Take Hit better.png',
-            framesMax: 4
+            imageSrc: './img/fantasy/Take Hit.png',
+            framesMax: 3
         },
         death: {
-            imageSrc: './img/samuraiMack/death.png',
-            framesMax: 6
+            imageSrc: './img/fantasy/death.png',
+            framesMax: 7
         }
     },
     attackBox: {
         offset: {
-            x: 100,
-            y: 0
+            x: 50,
+            y: 100
         },
-        width: 150,
+        width: 130,
         height: 120
     }
 
@@ -88,7 +93,7 @@ const enemy = new Fighter({
     color: 'green',
     offset: {x:-100, y:0},
     imageSrc: './img/kenji/Idle.png',
-    scale: 2.5, framesMax: 4, offset: {x:215,y:167},
+    scale: 2.5, framesMax: 4, offset: {x:215,y:80},
     sprites: {
         idle: {
             imageSrc: './img/kenji/Idle.png',
@@ -122,7 +127,7 @@ const enemy = new Fighter({
     attackBox: {
         offset: {
             x: -150,
-            y: 25
+            y: 100
         },
         width: 140,
         height: 100
@@ -157,7 +162,8 @@ function animate() {
     c.fillStyle = 'black'
     c.fillRect(0,0,canvas.width,canvas.height)
     background.update()
-    shop.update()
+    background2.update()
+    mist.update()
     c.fillStyle = 'rgba(255,255,255,0.1)'
     c.fillRect(0,0,canvas.width,canvas.height)
     player.update()
@@ -210,7 +216,7 @@ function animate() {
     //detect for collision
     if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking  && player.frameCurrent === 4)
     {
-        enemy.takeHit(12)
+        enemy.takeHit(25)
         player.isAttacking = false
         gsap.to('#enemyHealth', {
             width: enemy.health + '%'
@@ -224,7 +230,7 @@ function animate() {
 
     if (rectangularCollision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking && enemy.frameCurrent === 2)
     {
-        player.takeHit(11)
+        player.takeHit(20)
         enemy.isAttacking = false
         gsap.to('#playerHealth', {
             width: player.health + '%'
