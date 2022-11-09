@@ -56,7 +56,16 @@ const player = new Fighter({
             imageSrc: './img/samuraiMack/Attack1.png',
             framesMax: 6
         }
+    },
+    attackBox: {
+        offset: {
+            x: 100,
+            y: 0
+        },
+        width: 150,
+        height: 120
     }
+
 })
 
 const enemy = new Fighter({
@@ -69,7 +78,40 @@ const enemy = new Fighter({
     y:0
     },
     color: 'green',
-    offset: {x:-100, y:0}
+    offset: {x:-100, y:0},
+    imageSrc: './img/kenji/Idle.png',
+    scale: 2.5, framesMax: 4, offset: {x:215,y:167},
+    sprites: {
+        idle: {
+            imageSrc: './img/kenji/Idle.png',
+            framesMax: 4
+        },
+        run: {
+            imageSrc: './img/kenji/Run.png',
+            framesMax: 8
+        },
+        jump: {
+            imageSrc: './img/kenji/Jump.png',
+            framesMax: 2
+        },
+        fall: {
+            imageSrc: './img/kenji/Fall.png',
+            framesMax: 2
+        },
+        attack1: {
+            imageSrc: './img/kenji/Attack1.png',
+            framesMax: 4
+        }
+    },
+    attackBox: {
+        offset: {
+            x: -150,
+            y: 25
+        },
+        width: 140,
+        height: 100
+    }
+
 })
 
 
@@ -101,7 +143,7 @@ function animate() {
     background.update()
     shop.update()
     player.update()
-    //enemy.update()
+    enemy.update()
 
     //player movement and animation
     player.velocity.x = 0
@@ -130,12 +172,25 @@ function animate() {
     enemy.velocity.x = 0
     if(keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
         enemy.velocity.x = -4
-    } if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
+        enemy.switchSprite('run')
+    } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
         enemy.velocity.x = 4
+        enemy.switchSprite('run')
+    }
+    else {
+        enemy.switchSprite('idle')
+    }
+
+    //enemy jump animation
+    if (enemy.velocity.y < 0 ) {
+        enemy.switchSprite('jump')
+    }
+    else if (enemy.velocity.y > 0 ) {
+        enemy.switchSprite('fall')
     }
 
     //detect for collision
-    if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking)
+    if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking  && player.frameCurrent === 4)
     {
         player.isAttacking = false
         console.log("Enemy hit")
