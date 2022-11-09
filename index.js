@@ -55,6 +55,14 @@ const player = new Fighter({
         attack1: {
             imageSrc: './img/samuraiMack/Attack1.png',
             framesMax: 6
+        },
+        takeHit: {
+            imageSrc: './img/samuraiMack/Take Hit better.png',
+            framesMax: 4
+        },
+        death: {
+            imageSrc: './img/samuraiMack/death.png',
+            framesMax: 6
         }
     },
     attackBox: {
@@ -101,6 +109,14 @@ const enemy = new Fighter({
         attack1: {
             imageSrc: './img/kenji/Attack1.png',
             framesMax: 4
+        },
+        takeHit: {
+            imageSrc: './img/kenji/Take hit.png',
+            framesMax: 3
+        },
+        death: {
+            imageSrc: './img/kenji/death.png',
+            framesMax: 7
         }
     },
     attackBox: {
@@ -142,6 +158,8 @@ function animate() {
     c.fillRect(0,0,canvas.width,canvas.height)
     background.update()
     shop.update()
+    c.fillStyle = 'rgba(255,255,255,0.1)'
+    c.fillRect(0,0,canvas.width,canvas.height)
     player.update()
     enemy.update()
 
@@ -192,18 +210,32 @@ function animate() {
     //detect for collision
     if (rectangularCollision({rectangle1: player, rectangle2: enemy}) && player.isAttacking  && player.frameCurrent === 4)
     {
+        enemy.takeHit(12)
         player.isAttacking = false
-        console.log("Enemy hit")
-        enemy.health -= 50
-        document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+        gsap.to('#enemyHealth', {
+            width: enemy.health + '%'
+        })
     }
-    if (rectangularCollision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking)
+    //if player misses
+    if (player.isAttacking && player.frameCurrent === 4){
+        player.isAttacking = false
+    }
+
+
+    if (rectangularCollision({rectangle1: enemy, rectangle2: player}) && enemy.isAttacking && enemy.frameCurrent === 2)
     {
+        player.takeHit(11)
         enemy.isAttacking = false
-        console.log("Player hit")
-        player.health -= 5
-        document.querySelector('#playerHealth').style.width = player.health + '%'
+        gsap.to('#playerHealth', {
+            width: player.health + '%'
+        })
     }
+
+    //if enemy misses
+    if (enemy.isAttacking && enemy.frameCurrent === 2){
+        enemy.isAttacking = false
+    }
+
 
     //end game based on health
     if (enemy.health <= 0 || player.health <= 0)
@@ -215,23 +247,29 @@ function animate() {
 animate()
 
 window.addEventListener('keydown',(event) => {
-    switch(event.key){
-        case 'd':
-        keys.d.pressed = true
-        player.lastKey = 'd'
-        break
-        case 'a':
-        keys.a.pressed = true
-        player.lastKey = 'a'
-        break
-        case 'w':
-        if (player.position.y > canvas.height-260){
-            player.velocity.y = -15}
-        break
-        case ' ':
-            player.attack()
-        break
+    if (!player.dead)
+    {
 
+        switch(event.key){
+            case 'd':
+            keys.d.pressed = true
+            player.lastKey = 'd'
+            break
+            case 'a':
+            keys.a.pressed = true
+            player.lastKey = 'a'
+            break
+            case 'w':
+            if (player.position.y > canvas.height-260){
+                player.velocity.y = -15}
+            break
+            case ' ':
+                player.attack()
+            break}
+            }
+
+    if (!enemy.dead){
+        switch(event.key){
 
         case 'ArrowRight':
         keys.ArrowRight.pressed = true
@@ -248,6 +286,7 @@ window.addEventListener('keydown',(event) => {
         case 'ArrowDown':
         enemy.attack()
         break
+    }
     }
 console.log(event.key)
 })
