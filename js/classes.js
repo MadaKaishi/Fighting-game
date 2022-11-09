@@ -79,12 +79,15 @@ class Fighter extends Sprite{
         //draw attack box
         //c.fillRect(this.attackBox.position.x, this.attackBox.position.y,this.attackBox.width, this.attackBox.height)
 
+        //draw hitbox
+        //c.fillRect(this.position.x,this.position.y,this.width,this.height)
+
         this.position.y += this.velocity.y
         this.position.x += this.velocity.x
 
-    if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
+    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
         this.velocity.y = 0
-        this.position.y = 330
+        this.position.y = 440
     }
     else this.velocity.y += gravity;
    }

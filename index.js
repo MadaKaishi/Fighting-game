@@ -38,7 +38,7 @@ const player = new Fighter({
         y: 0
     },
     imageSrc: './img/fantasy/Idle.png',
-    scale: 3, framesMax: 10, offset: {x:215,y:60},
+    scale: 3, framesMax: 10, offset: {x:215,y:171},
     sprites: {
         idle: {
             imageSrc: './img/fantasy/Idle.png',
@@ -83,7 +83,7 @@ const player = new Fighter({
 const enemy = new Fighter({
     position: {
     x:400,
-    y:100
+    y:0
     },
     velocity: {
     x:0,
@@ -92,7 +92,7 @@ const enemy = new Fighter({
     color: 'green',
     offset: {x:-100, y:0},
     imageSrc: './img/kenji/Idle.png',
-    scale: 2.5, framesMax: 4, offset: {x:215,y:80},
+    scale: 2.5, framesMax: 4, offset: {x:215,y:190},
     sprites: {
         idle: {
             imageSrc: './img/kenji/Idle.png',
